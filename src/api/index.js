@@ -1,9 +1,10 @@
 const Router = require('koa-router');
 
 const api = new Router();
+const books = require('./book');
+const creams = require('./cream');
 
-api.get('/books', (ctx, next) => {
-    ctx.body = 'GET ' + ctx.request.path;
-});
+api.use('/book', books.routes());
+api.use('/cream', creams.routes());
 
 module.exports = api;
