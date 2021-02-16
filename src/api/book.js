@@ -1,4 +1,3 @@
-const logger = require('./logger');
 const Router    = require('koa-router');
 const router  = Router();
 const mysql      = require('mysql');
@@ -7,35 +6,35 @@ const connection = mysql.createConnection(dbconfig);
 
 
 router.get('/users',async ctx => {
-    const result = await new Promise ((resolve, reject)=>{
-        connection.query('SELECT * from employees',(error, rows, fields)=>{
+    // const makeRequest = async () => {
+    //     console.log("await getJSON()")
+    //     return "done"
+    //   }
+    //   ctx.body = makeRequest();
+
+    await new Promise ((resolve, reject)=>{
+        connection.query('SELECT * from employees',(error, rows)=>{
             ctx.body = rows;
-            if (error) reject(error)
-            else resolve(true);
-            return true;
+            if (error? reject(error):resolve(true));
         });
-        return true;
     });
+
 });
 
 
 router.post('/',(ctx) => {
-    logger.info("POST");
     ctx.response.body = "POST";
 });
 
 router.put('/',(ctx) => {
-    logger.info("PUT");
     ctx.response.body = "PUT";
 });
 
 router.patch('/',(ctx) => {
-    logger.info("PATCH");
     ctx.response.body = "PATCH";
 });
 
 router.delete('/',(ctx) => {
-    logger.info("DELETE");
     ctx.response.body = "DELETE";
 });
 
