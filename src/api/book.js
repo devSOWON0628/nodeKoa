@@ -7,7 +7,7 @@ const connection = mysql.createConnection(dbconfig);
 
 
 router.get('/users',async ctx => {
-    await new Promise ((resolve, reject)=>{
+    const result = await new Promise ((resolve, reject)=>{
         connection.query('SELECT * from employees',(error, rows, fields)=>{
             ctx.body = rows;
             if (error) reject(error)
@@ -17,6 +17,7 @@ router.get('/users',async ctx => {
         return true;
     });
 });
+
 
 router.post('/',(ctx) => {
     logger.info("POST");
