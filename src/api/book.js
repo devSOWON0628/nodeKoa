@@ -6,15 +6,17 @@ const dbconfig   = require('../database/config');
 const connection = mysql.createConnection(dbconfig);
 
 
-router.get('/users', (ctx, res) => {
-    console.log(1);
-    let result = connection.query('SELECT * from employees',  async function (error, rows, fields) {
-        return await rows;
+router.get('/users',async ctx => {
+    await new Promise ((resolve, reject)=>{
+        connection.query('SELECT * from employees',(error, rows, fields)=>{
+            ctx.body = rows;
+            if (error) reject(error)
+            else resolve(true);
+            return true;
+        });
+        return true;
     });
-    console.log(result);
-      ctx.response.body = "out";
 });
-
 
 router.post('/',(ctx) => {
     logger.info("POST");
