@@ -1,26 +1,21 @@
-const Router    = require('koa-router');
-const router  = Router();
+const Router        = require('koa-router');
+const router        = Router();
 const mysql      = require('mysql');
 const dbconfig   = require('../database/config');
 const connection = mysql.createConnection(dbconfig);
 
 
-router.get('/users',async ctx => {
-    // const makeRequest = async () => {
-    //     console.log("await getJSON()")
-    //     return "done"
-    //   }
-    //   ctx.body = makeRequest();
-
-    await new Promise ((resolve, reject)=>{
-        connection.query('SELECT * from employees',(error, rows)=>{
-            ctx.body = rows;
-            if (error? reject(error):resolve(true));
-        });
-    });
-
+router.get('/users',async (ctx, next) => {
+    ctx.body = await getData('SELECT * from employees');
 });
 
+async function getData(query){
+    return new Promise(resolve => {
+        connection.query(query ,async(error, rows)=>{
+            resolve(rows);
+        });
+      });
+}
 
 router.post('/',(ctx) => {
     ctx.response.body = "POST";
